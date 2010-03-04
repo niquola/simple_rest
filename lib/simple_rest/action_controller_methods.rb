@@ -2,6 +2,7 @@ module SimpleRest
   module ActionControllerMethods
     def self.included(base)
       base.extend(ClassMethods)
+      base.before_filter :json_request_handling_filter
     end
 
     module ClassMethods
@@ -9,6 +10,15 @@ module SimpleRest
         rescue_from Exception do |exception|
           simple_rest({:message=>exception.to_s},{:status=>500})
         end
+      end
+    end
+
+    #FIXME: add decode exception handling
+    def json_request_handling_filter
+      if params[:_json]
+        json_params = ActiveSupport::JSON.decode(params[:_json])
+        params.delete(:_json)
+        params.merge!(json_params)
       end
     end
 

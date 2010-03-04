@@ -16,6 +16,10 @@ class MyController < ActionController::Base
     simple_rest({:message=>exception.to_s},{:status=>500})
   end
 
+  def echo
+    simple_rest params
+  end
+
   def index
     result = {:field=>'value'}
     simple_rest result
@@ -28,6 +32,7 @@ class MyController < ActionController::Base
   def action_with_uncatched_error
     raise Exception.new("Some error")
   end
+
 end
 
 class MyControllerTest < ActionController::TestCase
@@ -47,8 +52,7 @@ class MyControllerTest < ActionController::TestCase
     assert_equal('value', resp_obj['field'])
   end
 
-  def test_jsonp_format
-    get :index, :format => 'jsonp'
+  def parse_json_responce
     resp = @response.body
     assert(resp)
     resp_obj = nil
@@ -56,6 +60,12 @@ class MyControllerTest < ActionController::TestCase
       resp_obj = ActiveSupport::JSON.decode(resp)
     }
     assert_not_nil(resp_obj)
+    resp_obj
+  end
+
+  def test_jsonp_format
+    get :index, :format => 'jsonp'
+    resp_obj = parse_json_responce
     assert_not_nil(resp_obj['status'])
     assert_equal(200,resp_obj['status'])
     assert_equal('value',resp_obj['data']['field'])
@@ -73,12 +83,7 @@ class MyControllerTest < ActionController::TestCase
 
   def test_jsonp_exception
     get :action_with_error, :format => 'jsonp'
-    resp = @response.body
-    resp_obj = nil
-    assert_nothing_raised(Exception) {
-      resp_obj = ActiveSupport::JSON.decode(resp)
-    }
-    assert_not_nil(resp_obj)
+    resp_obj = parse_json_responce
     assert_not_nil(resp_obj['data']['message'])
     assert_equal(500,resp_obj['status'])
   end
@@ -86,11 +91,7 @@ class MyControllerTest < ActionController::TestCase
   def test_rescue_exceptions_restfully
     get :action_with_uncatched_error, :format => 'jsonp'
     resp = @response.body
-    resp_obj = nil
-    assert_nothing_raised(Exception) {
-      resp_obj = ActiveSupport::JSON.decode(resp)
-    }
-    assert_not_nil(resp_obj)
+    resp_obj = parse_json_responce
     assert_not_nil(resp_obj['data']['message'])
     assert_equal(500,resp_obj['status'])
     assert_response(:ok)
@@ -98,5 +99,13 @@ class MyControllerTest < ActionController::TestCase
     get :action_with_uncatched_error, :format => 'js'
     assert_response(500)
 
+  end
+
+  def test_json_request_support
+    get :echo, :format => 'jsonp',:_json=>'{suboject:{field:[1,2,3]}}'
+    resp_obj = nil
+    resp_obj = parse_json_responce
+    assert_not_nil(resp_obj['data'])
+    assert_equal(2, resp_obj['data']['suboject']['field'][1])
   end
 end

@@ -5,8 +5,10 @@
 == DESCRIPTION
 
 ActionControllers helper methods for restful response handling
-Just DRY respond_to do |format|; ...;  end;
-Support for jsonp and pdf
+
+* Just DRY respond_to do |format|; ...;  end;
+* Support for jsonp and pdf
+* Support  <b>json request</b> work around though magic parameter _json, if generic json request is imposibble (for example when using jsonp)
   
 
 == INSTALL:
@@ -19,7 +21,7 @@ then
 
   sudo rake gems:install
 
-To handle uncatched exceptios restfully  add this to ApplicationController
+To handle uncatched exceptions restfully  add this to ApplicationController
 
  class ApplicationController < ApplicationController::Base
     rescue_exceptions_restfully
@@ -36,6 +38,10 @@ Example:
     end
 
 See more in tests  
+
+== CHANGE LOG
+
+* 0.0.2 add json request magic parameter support
 
 == TEST EXAMPLES:
 
