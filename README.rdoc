@@ -4,21 +4,22 @@
 
 == DESCRIPTION
 
-  ActionControllers helper methods for restful response handling
-  Just DRY respond_to do |format|; ...;  end;
-  Support for jsonp and pdf
+ActionControllers helper methods for restful response handling
+Just DRY respond_to do |format|; ...;  end;
+Support for jsonp and pdf
   
 
 == INSTALL:
 
- in config/environment.rb 
- config.gem 'simple_rest'
+in config/environment.rb 
 
- then
+  config.gem 'simple_rest'
 
- sudo rake gems:install
+then
 
- To handle uncatched exceptios restfully  add this to ApplicationController
+  sudo rake gems:install
+
+To handle uncatched exceptios restfully  add this to ApplicationController
 
  class ApplicationController < ApplicationController::Base
     rescue_exceptions_restfully
@@ -26,7 +27,7 @@
 
 == USAGE  
 
-  Example:
+Example:
    
     def action 
       #fetch result
@@ -34,7 +35,7 @@
       simple_rest result,options
     end
 
-  See more in tests  
+See more in tests  
 
 == TEST EXAMPLES:
 
