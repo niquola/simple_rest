@@ -41,6 +41,7 @@ Example:
 == CHANGE LOG
 
 * 0.0.2 add json request magic parameter support
+* 0.0.3 propogate opts to render method if html
 
 == MORE
 

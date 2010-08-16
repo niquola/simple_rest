@@ -27,7 +27,7 @@ module SimpleRest
       serial_opts= opts[:serialize_opts] || {}
       respond_to do |format|
         format.js { render :json => data.to_json(serial_opts),:status=>status}
-        format.html { render}
+        format.html { render opts}
         format.yaml { render :partial=> 'shared/inspect',:content_type =>'text/html',:locals => { :data => data } ,:status=>status }
         format.xml  { render :xml => data.to_xml(serial_opts),:status=>status}
         format.pdf  { render (opts[:pdf_opts] || {}).merge(:layout=>false) }

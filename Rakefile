@@ -24,12 +24,12 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 PKG_FILES = FileList[ '[a-zA-Z]*', 'lib/**/*', 'test/**/*' ]
-
+require 'lib/simple_rest.rb'
 spec = Gem::Specification.new do |s|
   s.name = "simple_rest"
-  s.version = "0.0.2"
+  s.version = SimpleRest::VERSION
   s.author = "niquola,smecsia"
-  s.email = "niquola@gmail.com,smecsia@gmail"
+  s.email = "niquola@gmail.com,smecsia@gmail.com"
   #s.homepage = ""
   s.platform = Gem::Platform::RUBY
   s.summary = "ActionControllers helpers for restful rails"
