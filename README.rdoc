@@ -42,6 +42,7 @@ Example:
 
 * 0.0.2 add json request magic parameter support
 * 0.0.3 propogate opts to render method if html
+* 0.0.4 upgrade to Rails 3 (no backward compatibility)
 
 == MORE
 

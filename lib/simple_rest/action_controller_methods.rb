@@ -3,6 +3,7 @@ module SimpleRest
     def self.included(base)
       base.extend(ClassMethods)
       base.before_filter :json_request_handling_filter
+      base.respond_to :js, :xml, :jsonp, :pdf, :yaml, :html
     end
 
     module ClassMethods
