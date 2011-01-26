@@ -1,5 +1,16 @@
 module SimpleRest
   module ActionControllerResponderMethods
+    def self.included(base)
+      default_to_html = base.instance_method(:to_html)
+      base.send :define_method, :to_html do
+        begin
+          to_html_with_opts
+        rescue ActionView::MissingTemplate
+          default_to_html.bind(base).call
+        end
+      end
+    end
+
     def to_js
       status = options[:status] || :ok
       render :json => resource.to_json(options[:serialize_opts] || {}), :status => status
@@ -22,6 +33,10 @@ module SimpleRest
     def to_jsonp
       text = build_jsonp_message(resource, options)
       render ({:content_type => :js, :text => text}.merge(options.merge(:status=>:ok)))
+    end
+
+    def to_html_with_opts
+      render options
     end
 
     def build_jsonp_message(data, options)

@@ -1,5 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/test_helper.rb')
 
+class TestApp < Rails::Application
+
+end
+
+TestApp.initialize!
+
 class MyController < ActionController::Base
   rescue_exceptions_restfully
 
@@ -27,12 +33,6 @@ class MyController < ActionController::Base
     raise Exception.new("Some error")
   end
 end
-
-class TestApp < Rails::Application
-
-end
-
-TestApp.initialize!
 
 class MyControllerTest < ActionController::TestCase
   def setup
