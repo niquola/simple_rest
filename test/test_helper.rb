@@ -5,8 +5,9 @@ end
 $:.unshift(path('../lib'))
 require 'rubygems'
 require "test/unit"
-require 'active_support'
-require 'active_support/test_case'
-require 'action_controller'
+require 'rails'
+require "action_controller"
+require "action_dispatch/routing"
+#require 'rails/application/configuration'
 require 'simple_rest'
 

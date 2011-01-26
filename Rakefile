@@ -27,13 +27,13 @@ PKG_FILES = FileList[ '[a-zA-Z]*', 'lib/**/*', 'test/**/*' ]
 
 spec = Gem::Specification.new do |s|
   s.name = "simple_rest"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.author = "niquola,smecsia"
   s.email = "niquola@gmail.com,smecsia@gmail"
   #s.homepage = ""
   s.platform = Gem::Platform::RUBY
   s.summary = "ActionControllers helpers for restful rails"
-  s.add_dependency('rails', '>= 2.3.5')
+  s.add_dependency('rails', '>= 3.0')
   s.files = PKG_FILES.to_a 
   s.require_path = "lib"
   s.has_rdoc = false
