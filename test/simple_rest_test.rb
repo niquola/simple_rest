@@ -1,10 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper.rb'
-
-ActionController::Routing::Routes.draw do |map|
-  map.connect ':controller/:action/:id.:format'
-  map.connect ':controller/:action.:format'
-  map.connect ':controller/:action/:id'
-end
+require File.expand_path(File.dirname(__FILE__) + '/test_helper.rb')
 
 class MyController < ActionController::Base
   rescue_exceptions_restfully
@@ -13,7 +7,7 @@ class MyController < ActionController::Base
   end
 
   rescue_from MyException do |exception|
-    simple_rest({:message=>exception.to_s},{:status=>500})
+    simple_rest({:message=>exception.to_s}, {:status=>500})
   end
 
   def echo
@@ -32,10 +26,25 @@ class MyController < ActionController::Base
   def action_with_uncatched_error
     raise Exception.new("Some error")
   end
+end
+
+class TestApp < Rails::Application
 
 end
 
+TestApp.initialize!
+
 class MyControllerTest < ActionController::TestCase
+  def setup
+    @routes = ActionDispatch::Routing::RouteSet.new
+    @routes.draw do
+      match ':controller/:action/:id.:format', :to => MyController
+      match ':controller/:action.:format', :to => MyController
+      match ':controller/:action/:id', :to => MyController
+    end
+    MyController.send :include, @routes.url_helpers
+  end
+
   def test_methods_mixed
     assert(MyController.new.respond_to?(:simple_rest))
   end
@@ -67,8 +76,8 @@ class MyControllerTest < ActionController::TestCase
     get :index, :format => 'jsonp'
     resp_obj = parse_json_responce
     assert_not_nil(resp_obj['status'])
-    assert_equal(200,resp_obj['status'])
-    assert_equal('value',resp_obj['data']['field'])
+    assert_equal(200, resp_obj['status'])
+    assert_equal('value', resp_obj['data']['field'])
   end
 
   def test_xml_format
@@ -85,15 +94,15 @@ class MyControllerTest < ActionController::TestCase
     get :action_with_error, :format => 'jsonp'
     resp_obj = parse_json_responce
     assert_not_nil(resp_obj['data']['message'])
-    assert_equal(500,resp_obj['status'])
+    assert_equal(500, resp_obj['status'])
   end
 
   def test_rescue_exceptions_restfully
     get :action_with_uncatched_error, :format => 'jsonp'
-    resp = @response.body
+    resp     = @response.body
     resp_obj = parse_json_responce
     assert_not_nil(resp_obj['data']['message'])
-    assert_equal(500,resp_obj['status'])
+    assert_equal(500, resp_obj['status'])
     assert_response(:ok)
 
     get :action_with_uncatched_error, :format => 'js'
@@ -102,7 +111,7 @@ class MyControllerTest < ActionController::TestCase
   end
 
   def test_json_request_support
-    get :echo, :format => 'jsonp',:_json=>'{suboject:{field:[1,2,3]}}'
+    get :echo, :format => 'jsonp', :_json=>'{suboject:{field:[1,2,3]}}'
     resp_obj = nil
     resp_obj = parse_json_responce
     assert_not_nil(resp_obj['data'])
