@@ -1,4 +1,7 @@
 *~
 *.swp
 *.swo
+/.idea
+/log
+/test/log
 pkg/*
