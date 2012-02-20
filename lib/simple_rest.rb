@@ -22,5 +22,5 @@ module SimpleRest
   end
 end
 
-require "rails/railtie" 
+require "rails/railtie"
 require "simple_rest/railtie"

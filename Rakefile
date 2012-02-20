@@ -24,7 +24,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 PKG_FILES = FileList[ '[a-zA-Z]*', 'lib/**/*', 'test/**/*' ]
-require 'lib/simple_rest.rb'
+require './lib/simple_rest.rb'
 spec = Gem::Specification.new do |s|
   s.name = "simple_rest"
   s.version = SimpleRest::VERSION
