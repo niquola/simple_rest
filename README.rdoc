@@ -34,15 +34,16 @@ Example:
     def action 
       #fetch result
       options = {:status=>:ok,:serialize_opts=>some options will be passed to to_json or to_xml}
-      simple_rest result,options
+      respond_with result,options
     end
 
 
 == CHANGE LOG
 
-* 0.0.2 add json request magic parameter support
-* 0.0.3 propogate opts to render method if html
+* 0.0.6 upgrade to Rails 3.1
 * 0.0.4 upgrade to Rails 3 (no backward compatibility)
+* 0.0.3 propogate opts to render method if html
+* 0.0.2 add json request magic parameter support
 
 == MORE
 
