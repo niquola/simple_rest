@@ -5,3 +5,6 @@
 /log
 /test/log
 pkg/*
+.idea
+test/log
+log
